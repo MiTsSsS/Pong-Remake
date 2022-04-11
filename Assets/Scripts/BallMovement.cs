@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour
 {
+    public GameManager gameManager;
     public GameObject ball;
     private Rigidbody2D rb;
 
@@ -45,17 +46,38 @@ public class BallMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Rigidbody2D prb = collision.gameObject.GetComponent<Rigidbody2D>();
+        BoxCollider2D bc = collision.gameObject.GetComponent<BoxCollider2D>();
+        float ballYOffsetFromPaddle;
+
         if (collision.gameObject.name == "LeftPaddle") {
-            direction.x = 0.1f;
+            ballYOffsetFromPaddle = direction.x = 0.1f;
+
             //Debug.Log("Left");
 
         }
 
-        else if (collision.gameObject.name == "RightPaddle") {
+        if (collision.gameObject.name == "RightPaddle") {
             direction.x = -0.1f;
             //Debug.Log("Right");
 
         }
 
+
+        if (collision.gameObject.name == "RightPaddle" || collision.gameObject.name == "LeftPaddle") {
+            ballYOffsetFromPaddle = rb.transform.position.y - collision.transform.position.y;
+
+        }
+
+        if (collision.gameObject.name == "RightScoreField") {
+
+            gameManager.playerScored(false);
+
+        }
+
+        if (collision.gameObject.name == "LeftScoreField") {
+            gameManager.playerScored(true);
+
+        }
     }
 }

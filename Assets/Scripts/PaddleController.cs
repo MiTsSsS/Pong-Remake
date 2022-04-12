@@ -48,10 +48,7 @@ public class PaddleController : MonoBehaviour
     void Update()
     {
         if (Input.GetKey(KeyCode.UpArrow))  {
-            if (rb.transform.position.y == upperYBound)
-               // rb.transform.position.y = 
             rb.MovePosition(calculatePosition(true));
-
 
         }
 

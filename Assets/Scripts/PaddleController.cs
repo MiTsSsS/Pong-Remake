@@ -10,6 +10,9 @@ public class PaddleController : MonoBehaviour
     //public ChosenSide _chosenSide = ChosenSide.LeftSide;
     public float _startingPositionX = -9.0f;
     public float _speed = 6.0f;
+    public float upperYBound = 4.24f;
+    public float lowerYBound = -4.24f;
+    //private Vector2 upperBoundVect = new Vector2(rb.transform.position.x, upperYBound);
 
     Vector2 calculatePosition(bool _isUp)   {
         Vector2 tempVect = new Vector2(0.0f, _speed * 0.050f);
@@ -45,7 +48,10 @@ public class PaddleController : MonoBehaviour
     void Update()
     {
         if (Input.GetKey(KeyCode.UpArrow))  {
+            if (rb.transform.position.y == upperYBound)
+               // rb.transform.position.y = 
             rb.MovePosition(calculatePosition(true));
+
 
         }
 
@@ -53,5 +59,6 @@ public class PaddleController : MonoBehaviour
             rb.MovePosition(calculatePosition(false));
 
         }
+
     }
 }

@@ -57,8 +57,6 @@ public class BallMovement : MonoBehaviour
             vel.x = rb.velocity.x;
             vel.y = (rb.velocity.y / 2) + (collision.collider.attachedRigidbody.velocity.y / 3);
             rb.velocity = vel;
-            //ballYOffsetFromPaddle = rb.transform.position.y - collision.transform.position.y;
-            //Debug.Log(ballYOffsetFromPaddle);
 
         }
 

@@ -8,25 +8,32 @@ public class BallMovement : MonoBehaviour
     public GameObject ball;
     private Rigidbody2D rb;
 
+    float ballSpeed = 10.0f;
+    Vector3 direction = new Vector3(0.06f, 0.0f, 0.0f);
 
-    float ballSpeed = 1.0f;
-    Vector3 direction = new Vector3(0.1f, 0.0f, 0.0f);
-    
     private void launchBall()
     {
         int initialSide = Random.Range(0, 100);
 
         if(initialSide <= 49)
         {
-            //Launch ball on left side
+            rb.AddForce(new Vector2(-300, 150));
 
         }
 
         else
         {
-            //Launch ball on right side
+            rb.AddForce(new Vector2(300, -150));
 
         }
+
+    }
+
+    private void resetBall()
+    {
+        rb.velocity = new Vector2(0, 0);
+        transform.position = Vector2.zero;
+        Invoke("launchBall", 2);
 
     }
 
@@ -34,13 +41,7 @@ public class BallMovement : MonoBehaviour
     void Start()
     {
         rb = ball.GetComponent<Rigidbody2D>();
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        rb.transform.Translate(direction);
+        Invoke("launchBall", 2);
 
     }
 
@@ -50,33 +51,26 @@ public class BallMovement : MonoBehaviour
         BoxCollider2D bc = collision.gameObject.GetComponent<BoxCollider2D>();
         float ballYOffsetFromPaddle;
 
-        if (collision.gameObject.name == "LeftPaddle") {
-            ballYOffsetFromPaddle = direction.x = 0.1f;
+        if (collision.collider.CompareTag("Player")) {
 
-            //Debug.Log("Left");
-
-        }
-
-        if (collision.gameObject.name == "RightPaddle") {
-            direction.x = -0.1f;
-            //Debug.Log("Right");
-
-        }
-
-
-        if (collision.gameObject.name == "RightPaddle" || collision.gameObject.name == "LeftPaddle") {
-            ballYOffsetFromPaddle = rb.transform.position.y - collision.transform.position.y;
+            Vector2 vel;
+            vel.x = rb.velocity.x;
+            vel.y = (rb.velocity.y / 2) + (collision.collider.attachedRigidbody.velocity.y / 3);
+            rb.velocity = vel;
+            //ballYOffsetFromPaddle = rb.transform.position.y - collision.transform.position.y;
+            //Debug.Log(ballYOffsetFromPaddle);
 
         }
 
         if (collision.gameObject.name == "RightScoreField") {
-
             gameManager.playerScored(false);
+            resetBall();
 
         }
 
         if (collision.gameObject.name == "LeftScoreField") {
             gameManager.playerScored(true);
+            resetBall();
 
         }
     }

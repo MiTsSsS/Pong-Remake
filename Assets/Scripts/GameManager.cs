@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
     }
 
     // Start is called before the first frame update
@@ -29,37 +28,7 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void updateGameState(GameState newState)
-    {
-        state = newState;
-
-        switch (newState)
-        {
-            case GameState.Win:
-                break;
-
-            case GameState.Lose:
-                break;
-
-            case GameState.PlayerScored:
-                {
-                    
-                    break;
-                }
-
-            case GameState.AiScored:
-                {
-
-                    break;
-                }
-
-            default:
-                break;
-
-        }
-    }
-
-        public void playerScored(bool isHuman) { 
+    public void playerScored(bool isHuman) { 
         if (isHuman)
         {
             playerScore++;

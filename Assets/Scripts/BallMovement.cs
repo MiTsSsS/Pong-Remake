@@ -8,8 +8,8 @@ public class BallMovement : MonoBehaviour
     public GameObject ball;
     private Rigidbody2D rb;
 
-    float ballSpeed = 10.0f;
-    Vector3 direction = new Vector3(0.06f, 0.0f, 0.0f);
+    float ballSpeed = 1.5f;
+    //Vector3 direction = new Vector3(0.06f, 0.0f, 0.0f);
 
     private void launchBall()
     {
@@ -17,22 +17,30 @@ public class BallMovement : MonoBehaviour
 
         if(initialSide <= 49)
         {
-            rb.AddForce(new Vector2(-300, 150));
+            rb.AddForce(new Vector2(-300, 150) * ballSpeed);
 
         }
 
         else
         {
-            rb.AddForce(new Vector2(300, -150));
+            rb.AddForce(new Vector2(300, -150) * ballSpeed);
 
         }
+    }
 
+    private void speedUp()
+    {
+        rb.velocity += new Vector2(6, 6);
+        gameManager.GetComponent<GameManager>().speedUpPaddles();
+        
     }
 
     private void resetBall()
     {
         rb.velocity = new Vector2(0, 0);
+        ballSpeed = 2.0f;
         transform.position = Vector2.zero;
+        gameManager.resetPaddles();
         Invoke("launchBall", 2);
 
     }
@@ -53,23 +61,26 @@ public class BallMovement : MonoBehaviour
 
         if (collision.collider.CompareTag("Player")) {
 
-            Vector2 vel;
+            /*Vector2 vel;
             vel.x = rb.velocity.x;
             vel.y = (rb.velocity.y / 2) + (collision.collider.attachedRigidbody.velocity.y / 3);
-            rb.velocity = vel;
-
+            rb.velocity = vel;*/
+            ballSpeed += 0.35f;
+            gameManager.playerScored();
+            speedUp();
         }
 
-        if (collision.gameObject.name == "RightScoreField") {
-            gameManager.playerScored(false);
-            resetBall();
+        if (collision.collider.CompareTag("Score Field")) {
+            if (collision.gameObject.name == "LeftScoreField") {
+                //gameManager.playerScored();
+                resetBall();
 
-        }
+            }
+            else {
+                //gameManager.playerScored();
+                resetBall();
 
-        if (collision.gameObject.name == "LeftScoreField") {
-            gameManager.playerScored(true);
-            resetBall();
-
+            }
         }
     }
 }
